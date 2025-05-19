@@ -1,2 +1,2 @@
 # hands-on-github-actions-part-two
-Repositório do hands-on introdução ao github actions
+Repositório do hands-on GitHub Actions para Engenharia de Dados
