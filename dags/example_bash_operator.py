@@ -27,18 +27,8 @@ from airflow.models.dag import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
 
-default_args = {
-    "owner": "Gerson_S",
-    "depends_on_past": False,
-    "email": ["gersonrodriguessantos8@gmail.com"],
-    "email_on_failure": False,
-    "email_on_retry": False,
-    "retries": 1,
-}
-
 with DAG(
     dag_id="example_bash_operator",
-    default_args=default_args,
     schedule="0 0 * * *",
     start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
     catchup=False,
@@ -46,7 +36,9 @@ with DAG(
     tags=["example", "example2"],
     params={"example_key": "example_value"},
 ) as dag:
-    run_this_last = EmptyOperator(task_id="run_this_last")
+    run_this_last = EmptyOperator(
+        task_id="run_this_last",
+    )
 
     # [START howto_operator_bash]
     run_this = BashOperator(
@@ -59,7 +51,8 @@ with DAG(
 
     for i in range(3):
         task = BashOperator(
-            task_id=f"runme_{i}", bash_command='echo "{{ task_instance_key_str }}" && sleep 1'
+            task_id=f"runme_{i}",
+            bash_command='echo "{{ task_instance_key_str }}" && sleep 1',
         )
         task >> run_this
 
